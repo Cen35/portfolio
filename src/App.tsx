@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type PointerEvent } from 'react'
 import { profile, projects, type Project } from './data/portfolio'
+import heroLandscape from './assets/hero-landscape.png'
 
 function Arrow({direction='right'}:{direction?:'left'|'right'}){
   return <svg className={direction==='left'?'arrow-left':''} viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -9,6 +10,32 @@ function Scribble({kind}:{kind:'flower'|'sun'|'leaf'}){
   if(kind==='flower') return <svg className="scribble" viewBox="0 0 90 90" aria-hidden="true"><path d="M45 45C9 50 16 20 42 39 30 8 63 11 50 40 78 17 88 51 55 47 82 68 51 84 47 53 35 84 7 65 40 49Z"/><circle cx="47" cy="46" r="7"/></svg>
   if(kind==='sun') return <svg className="scribble" viewBox="0 0 90 90" aria-hidden="true"><circle cx="45" cy="45" r="18"/><path d="M45 6v18M45 66v18M6 45h18M66 45h18M17 17l13 13M60 60l13 13M73 17 60 30M30 60 17 73"/></svg>
   return <svg className="scribble" viewBox="0 0 90 90" aria-hidden="true"><path d="M16 75C41 61 56 39 70 12M27 62C14 56 13 42 17 32c13 3 20 11 17 23M47 43c1-16 12-25 27-25 0 16-10 25-25 27"/></svg>
+}
+
+function CowCollage({kind='walk'}:{kind?:'walk'|'graze'}){
+  return <div className={`cow-collage cow-${kind}`} aria-hidden="true">
+    <svg viewBox="0 0 220 126">
+      <g className="cow-shadow"><ellipse cx="109" cy="111" rx="76" ry="8"/></g>
+      <g className="cow-body">
+        <path className="cow-paper dark" d="M45 38c24-17 93-18 119 4 10 9 8 39-4 49-21 16-89 14-112-3-13-10-16-39-3-50Z"/>
+        <path className="cow-paper patch" d="M55 43c15-8 31-9 44-3-13 11-10 28 4 37-18 9-37 4-47-7-7-8-8-20-1-27ZM122 36c16-1 31 4 41 12 2 13-1 25-8 33-13-4-23-13-24-24-1-9-5-15-9-21Z"/>
+        <path className="cow-paper light" d="M162 47c19-14 37-10 46 0 7 8 5 25-4 32-9 7-30 2-43-11Z"/>
+        <path className="cow-paper nose" d="M190 68c14-3 22 1 23 8 0 7-10 12-24 8Z"/>
+        <circle className="cow-eye" cx="192" cy="55" r="2.6"/>
+        <path className="cow-line horn" d="M176 47c-4-13 5-18 12-19M198 45c5-11 13-11 17-7"/>
+        <path className="cow-line ear" d="M178 52c-11-8-16-4-17 3M202 51c8-7 14-3 15 2"/>
+        <path className="cow-line tail" d="M45 47C25 34 24 63 34 68"/>
+        <path className="cow-paper tail-tip" d="M27 64c8-5 14-2 14 5-6 7-12 7-14-5Z"/>
+      </g>
+      <g className="cow-legs">
+        <path className="cow-paper dark leg leg-a" d="M60 84h14l-2 27-10 1Z"/>
+        <path className="cow-paper dark leg leg-b" d="M91 88h13l5 23-10 2Z"/>
+        <path className="cow-paper dark leg leg-c" d="M136 86h13l1 26-10 1Z"/>
+        <path className="cow-paper dark leg leg-d" d="M158 82h12l7 28-10 2Z"/>
+      </g>
+    </svg>
+    <span>{kind==='graze'?'slow afternoon':'a tiny walk'}</span>
+  </div>
 }
 
 function ProjectPage({project}:{project:Project}){
@@ -93,7 +120,7 @@ export default function App(){
     <aside className="chapter-rail" aria-label="页面章节">{chapters.map(([id,number])=><a key={id} className={chapter===id?'active':''} href={`#${id}`}><span>{number}</span><i></i></a>)}</aside>
 
     <section className="hero" id="top" ref={heroRef} onPointerMove={moveHero}>
-      <div className="hero-photo reveal visible"><img src="./assets/hero-landscape.png" alt="草原、远山与云朵"/><span className="photo-label">somewhere soft & green · 2026</span><i className="tape tape-a"></i><i className="tape tape-b"></i></div>
+      <div className="hero-photo reveal visible"><img src={heroLandscape} alt="草原、远山与云朵"/><div className="cow-field"><CowCollage/><CowCollage kind="graze"/></div><span className="photo-label">somewhere soft & green · 2026</span><i className="tape tape-a"></i><i className="tape tape-b"></i></div>
       <div className="hero-paper">
         <div className="hero-copy reveal visible"><p className="kicker">HELLO, I AM {profile.name.toUpperCase()}.</p><h1>把灵感写进<br/><em>风经过的地方。</em></h1><p>{profile.intro}</p><div className="hero-actions"><a className="button solid" href="#works">翻看作品集 <Arrow/></a><a className="text-link" href={profile.github} target="_blank" rel="noreferrer">GitHub <Arrow/></a></div></div>
         <div className="hero-doodle"><Scribble kind="flower"/><span>keep growing<br/>at my own pace</span></div>
